@@ -1,20 +1,12 @@
 import React,{useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {View, TextInput,Button} from 'react-native'
+import {View, TextInput,Button,StyleSheet,Text} from 'react-native'
 import database from '@react-native-firebase/database'
 import auth from '@react-native-firebase/auth'
-import Login from './Login';
-// let adddition = (t1,t2,t3,t4)=>{
-//   database().ref('/users').push({
-//     uname:t1,
-//     uemail:t2,
-//     uid:t3,
-//     ppic:t4
 
-//   })
-// }
+
 const Signup = () => {
-//   const [uid,setUid] = useState()
+
 const navigation= useNavigation()
   const [mobile,setMobile] = useState()
   const [name,setName] = useState()
@@ -51,25 +43,85 @@ auth().createUserWithEmailAndPassword(email,password).then((res) => {
 
   console.error(error);
 });
+setName('')
+setEmail('')
+setMobile('')
+setConformPassword('')
+setPassword('')
+navigation.navigate('Login')
 
-// adddition(name,email,uid,pic)
+
   }
 
  
   return (
-    <View>
-        <TextInput  placeholder='name' onChangeText={text=>setName(text)} value={name}/>
-        {/* <TextInput placeholder='age' onChangeText={text=>SetAge(text)} value={age} /> */}
-        {/* <Button title='submit' onPress={()=>add()}/> */}
-        <TextInput  placeholder='Mobile' onChangeText={text=>setMobile(text)} value={mobile}/>
-        <TextInput  placeholder='email' onChangeText={text=>setEmail(text)} value={email}/>
-        <TextInput placeholder='password' onChangeText={text=>setPassword(text)} value={password} />
-        <TextInput placeholder='conformpassword' onChangeText={text=>setConformPassword(text)} value={conformPassword} />
-        <Button title='submit' onPress={()=>reg()}/>
-        <Button title='login' onPress={()=>navigation.navigate(Login)}/>
+    <View style={styles.container}> 
+    <Text style={styles.Text}>Registration</Text>
+
+    
+        <TextInput  placeholder='Name' onChangeText={text=>setName(text)} value={name} style={styles.inputtext}  text
+        placeholderTextColor='#939696'/>
+        <TextInput  placeholder='Mobile' onChangeText={text=>setMobile(text)} value={mobile} style={styles.inputtext} 
+        placeholderTextColor='#939696' keyboardType='numeric'/>
+        <TextInput  placeholder='Email' onChangeText={text=>setEmail(text)} value={email} style={styles.inputtext}
+        placeholderTextColor='#939696'/>
+        <TextInput placeholder='Password' onChangeText={text=>setPassword(text)} value={password} style={styles.inputtext} 
+        secureTextEntry={true}
+        placeholderTextColor='#939696' />
+        <TextInput placeholder='Re-enter password' onChangeText={text=>setConformPassword(text)} value={conformPassword} 
+        style={styles.inputtext}
+         secureTextEntry={true} 
+         placeholderTextColor='#939696'/>
+         <View style={styles.btview}>
+           <View style={styles.btn}><Button title='submit' onPress={()=>reg()} /></View>
+           <View style={styles.btn}><Button title='login' onPress={()=>navigation.navigate('Login')}/></View>
+           {/* <View style={styles.btn}> <Button title='login' onPress={()=>navigation.navigate('Login')}/></View> */}
+       
+         </View>
+        
     </View>
     
   );
 }
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'#102a33'
+  },
+  inputtext:{
+    height:50,
+    width:350,
+    borderWidth:1,
+    borderColor:'#ccdde3',
+    borderRadius:10,
+    marginBottom:10,
+    color:'white',
+    paddingLeft:10
+    
+  },
+  btview:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center'
+
+  },
+  btn:{
+    marginLeft:10,
+    marginRight:10,
+    height:50,
+    width:100,
+  
+    
+  },
+  Text:{
+    fontWeight:'bold',
+    fontSize:20,
+    marginBottom:20,
+    color:'white',
+  }
+
+})
 
 export default Signup;
