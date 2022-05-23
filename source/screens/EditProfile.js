@@ -1,9 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {View,Text, TextInput,Button,Image,TouchableHighlight,StyleSheet} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import database from '@react-native-firebase/database'
 import auth from '@react-native-firebase/auth'
+
 const EditProfile = () => {
     const user = auth().currentUser.uid
     const navigation= useNavigation()
@@ -15,8 +16,12 @@ const EditProfile = () => {
   const [emobile,setEmobile] = useState()
   
   function edit(){
+      console.log(ename,eemail,emobile)
       if(ename!=''){
-          setName(ename)
+          console.log('hlo')
+          setName('hrt')
+          console.log("klo",name)
+
       }
       if (eemail!=''){
           setEmail(eemail)
@@ -25,32 +30,39 @@ const EditProfile = () => {
       {
           setMobile(emobile)
       }
+      console.log(name)
+      console.log(email)
+      console.log(mobile)
       
-database()
-.ref('/users/'+user)
-.update({
-    Name: name,
-    Email: email,
-    mobile:mobile
-})
-.then(() => navigation.navigate('Home'));
-auth().currentUser.updateEmail({email:email})
+// database()
+// .ref('/users/'+user)
+// .update({
+//     Name: name,
+//     Email: email,
+//     mobile:mobile
+// })
+// .then(() => navigation.navigate('Home'));
+// auth().currentUser.updateEmail({email:email})
   }
-  database()
-  .ref('/users/' + user)
-  .once('value')
-  .then(snapshot => {
-      //   console.log('User data: ', snapshot.val().Name);
-      //   console.log('User data: ', snapshot.val().Email);
-      setName(snapshot.val().Name)
-      setEmail(snapshot.val().Email)
-      setMobile(snapshot.val().mobile)
-      setPic(snapshot.val().Pic)
 
-     
-
-
-  });
+  useEffect(()=>{
+    database()
+    .ref('/users/' + user)
+    .once('value')
+    .then(snapshot => {
+        //   console.log('User data: ', snapshot.val().Name);
+        //   console.log('User data: ', snapshot.val().Email);
+        setName(snapshot.val().Name)
+        setEmail(snapshot.val().Email)
+        setMobile(snapshot.val().mobile)
+        
+  
+       
+  
+  
+    });
+  })
+ 
 
 
     return (
@@ -69,7 +81,7 @@ auth().currentUser.updateEmail({email:email})
             <View>
                 <View style={styles.inputvw}>
                     <Icon name='person' size={32} color='#939696' />
-                    <TextInput style={styles.inputtext} placeholder={name} onChangeText={setEname} placeholderTextColor='#939696'/>
+                    <TextInput style={styles.inputtext} placeholder={name} onChangeText={text=>setEname} placeholderTextColor='#939696'/>
 
                 </View>
                 <View style={styles.inputvw}>

@@ -1,10 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, Button, Image, TouchableHighlight, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
-import ViewNativeComponent from 'react-native/Libraries/Components/View/ViewNativeComponent';
+
+
 const Home = () => {
     const user = auth().currentUser.uid
     const navigation = useNavigation()
@@ -21,7 +22,8 @@ const Home = () => {
                 navigation.navigate('Login'));
 
     }
-    database()
+    useEffect(()=>{
+        database()
         .ref('/users/' + user)
         .once('value')
         .then(snapshot => {
@@ -31,7 +33,11 @@ const Home = () => {
             setEmail(snapshot.val().Email)
             setMobile(snapshot.val().mobile)
             setPic(snapshot.val().Pic)
+            console.log(pic)
 
+
+    })
+   
 
 
 
@@ -64,7 +70,18 @@ const Home = () => {
                         
                     :
 
-                    <View></View>}
+                    <View>
+                        <View style={styles.picvw}>
+                            <Image source={{uri:pic}}  style={styles.imgstyle}/>
+                            </View>
+                            <View style={styles.piceditvw}>
+                                <TouchableHighlight onPress={() => navigation.navigate('Profilepic')} >
+                                <Icon name='edit' size={20} color='#939696' />
+
+                            </TouchableHighlight>
+                             </View>
+                        
+                        </View>}
                 </View>
             </View>
                 <View style={{borderTopLeftRadius:10,borderTopRightRadius:10}}>
