@@ -74,15 +74,17 @@ export default function Profilepic() {
       console.error(e);
     }
     setUploading(false);
-    Alert.alert(
-      'Photo uploaded!',
-      'Your photo has been uploaded to Firebase Cloud Storage!'
-    );
+    
     const photo = await storage().ref(filename).getDownloadURL();
     setImage(null);
     database().ref('/users/'+user).update({
         Pic: photo
-    }).then(()=>navigation.navigate('Home'))
+    }).then(()=>{Alert.alert(
+      'Photo changed',
+      
+    );
+    navigation.navigate('Home')}
+    )
    
     
     
